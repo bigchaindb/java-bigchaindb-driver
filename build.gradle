@@ -29,7 +29,7 @@ dependencies {
     compile 'commons-codec:commons-codec:1.10'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.interledger:java-crypto-conditions:2.0.0-SNAPSHOT'
+    compile 'com.bigchaindb:cryptoconditions:1.0'
     compile 'org.bouncycastle:bcprov-jdk15on:1.54'
     compile 'org.glassfish.tyrus.bundles:tyrus-standalone-client:1.9'
 

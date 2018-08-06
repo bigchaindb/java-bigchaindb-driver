@@ -20,17 +20,41 @@
 * [Authors](#authors)
 * [License](#license)
 
-## Installation and Usage
-The build system supports both maven and gradle, so to build the driver run:
-```bash
+## Installation
+
+The build system supports both maven and gradle -
+
+#####Maven users 
+- In your `pom.xml` add java-driver as dependency
+
+```		
+<dependency>
+	<groupId>com.bigchaindb</groupId>
+	<artifactId>bigchaindb-driver</artifactId>
+	<version>1.0</version>
+</dependency>
+```
+then 
+
+ ```
+ 	mvn clean install
+ ```
+#####Gradle users
+- In your `build.gradle` add java-driver as compiling dependency
+
+```
+dependencies {
+    compile 'com.bigchaindb.bigchaindb-driver:1.0'
+    }
+    
+```
+then 
+
+```
 ./gradlew install
 ```
-or use maven
-```bash
-mvn clean install
-```
-
-## Set up your configuration
+## Usage
+### Set up your configuration
 - If you don't have app-id and app-key, you can register one at [https://testnet.bigchaindb.com/](https://testnet.bigchaindb.com/)
 
 ```java
@@ -40,7 +64,7 @@ BigchainDbConfigBuilder
 	.addToken("app_key", <your-app-key>).setup();
 ```
 
-## Example: Prepare keys, assets and metadata
+### Example: Prepare keys, assets and metadata
 ```java
 //    prepare your keys
 net.i2p.crypto.eddsa.KeyPairGenerator edDsaKpg = new net.i2p.crypto.eddsa.KeyPairGenerator();
@@ -58,7 +82,7 @@ MetaData metaData = new MetaData();
 metaData.setMetaData("what", "My first BigchainDB transaction");
 ```
 
-## Example: Create a Transaction
+### Example: Create a Transaction
 ```java	
 //    Set up your transaction
 Transaction transaction = BigchainDbTransactionBuilder
@@ -69,7 +93,7 @@ Transaction transaction = BigchainDbTransactionBuilder
 	.buildOnly((EdDSAPublicKey) keyPair.getPublic());
 ```
 
-## Example: Create and Sign Transaction
+### Example: Create and Sign Transaction
 ```java
 //    Set up your transaction
 Transaction transaction = BigchainDbTransactionBuilder
@@ -81,7 +105,7 @@ Transaction transaction = BigchainDbTransactionBuilder
 
 ```
 
-## Example: Create, Sign and Send a Transaction
+### Example: Create, Sign and Send a Transaction
 ```java
 //    Set up your transaction
 Transaction transaction = BigchainDbTransactionBuilder
@@ -94,7 +118,7 @@ Transaction transaction = BigchainDbTransactionBuilder
 
 ```
 
-## Example: Setup Config with Websocket Listener
+### Example: Setup Config with Websocket Listener
 ```java
 public class MyCustomMonitor implements MessageHandler {
 	@Override
