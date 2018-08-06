@@ -24,7 +24,7 @@
 
 The build system supports both maven and gradle -
 
-#####Maven users 
+##### Maven users 
 - In your `pom.xml` add java-driver as dependency
 
 ```		
@@ -39,7 +39,7 @@ then
  ```
  	mvn clean install
  ```
-#####Gradle users
+##### Gradle users
 - In your `build.gradle` add java-driver as compiling dependency
 
 ```
