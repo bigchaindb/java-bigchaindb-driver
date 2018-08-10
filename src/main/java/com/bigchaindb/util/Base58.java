@@ -1,6 +1,3 @@
-package com.bigchaindb.util;
-
-
 /**
  * BreadWallet
  * Created by Mihail Gutan on mihail@breadwallet.com 11/28/16.
@@ -21,6 +18,9 @@ package com.bigchaindb.util;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+package com.bigchaindb.util;
+
 public class Base58 {
 
     /**
