@@ -1,3 +1,9 @@
+<!---
+Copyright BigchainDB GmbH and BigchainDB contributors
+SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
+Code is Apache-2.0 and docs are CC-BY-4.0
+--->
+
 [![Build Status](https://travis-ci.org/bigchaindb/java-bigchaindb-driver.svg?branch=master)](https://travis-ci.org/bigchaindb/java-bigchaindb-driver)
 [![Gitter](http://badges.gitter.im/bigchaindb/bigchaindb.svg)](https://gitter.im/bigchaindb/bigchaindb)
 [![java-bigchaindb-driver](media/repo-banner@2x.png)](https://www.bigchaindb.com)
@@ -258,22 +264,8 @@ Validators getValidators() throws IOException
 	- @bakaoh
 	- @innoprenuer
 
-## License
+## Licenses
 
-```
-    java-bigchaindb-driver - Official Java driver for[BigchainDB
-    Copyright (C) 2017  bigchaindb
+See [LICENSE](LICENSE) and [LICENSE-docs](LICENSE-docs).
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-```
+Exception: `src/main/java/com/bigchaindb/util/Base58.java` has a different license; see the comments at the top of that file for more information.
