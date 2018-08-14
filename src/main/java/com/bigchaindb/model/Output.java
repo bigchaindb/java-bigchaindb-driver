@@ -22,7 +22,7 @@ public class Output implements Serializable {
 	/** The output index. */
 	@SerializedName("output_index")
 	@Exclude
-	private String outputIndex;
+	private Integer outputIndex;
 	
 	/** The transaction id. */
 	@SerializedName("transaction_id")
@@ -46,7 +46,7 @@ public class Output implements Serializable {
 	 *
 	 * @return the output index
 	 */
-	public String getOutputIndex() {
+	public Integer getOutputIndex() {
 		return outputIndex;
 	}
 	
@@ -55,7 +55,7 @@ public class Output implements Serializable {
 	 *
 	 * @param outputIndex the new output index
 	 */
-	public void setOutputIndex(String outputIndex) {
+	public void setOutputIndex(Integer outputIndex) {
 		this.outputIndex = outputIndex;
 	}
 	

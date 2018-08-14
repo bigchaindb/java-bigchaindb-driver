@@ -347,7 +347,13 @@ public class BigchainDbTransactionBuilder {
                 this.transaction.setOperation(this.operation.name());
             }
 
-            this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
+            if (String.class.isAssignableFrom(this.assets.getClass())) {
+                // interpret as an asset ID
+                this.transaction.setAsset(new Asset((String) this.assets));
+            } else {
+                // otherwise it's an asset
+                this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
+            }
             this.transaction.setMetaData(this.metadata);
             this.transaction.setVersion("2.0");
 

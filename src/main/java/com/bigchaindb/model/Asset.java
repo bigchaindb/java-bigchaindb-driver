@@ -44,9 +44,18 @@ public class Asset implements Serializable {
 	 * @param data the data
 	 * @param dataClass due to type erasure the data class needs to be provided for serialization/deserialization
 	 */
-	public Asset(Object data, Class dataClass ) {
+	public Asset(Object data, Class dataClass) {
 		this.data = data;
 		this.dataClass = dataClass;
+	}
+
+	/**
+	 * Instantiates a new asset by reference.
+	 *
+	 * @param id ID of the asset.
+	 */
+	public Asset(String id) {
+		this.id = id;
 	}
 	
 	/**
