@@ -5,6 +5,7 @@
  */
 package com.bigchaindb.api;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bigchaindb.api.BlocksApi;
@@ -71,7 +72,7 @@ public class BlocksApiTest extends AbstractApiTest {
     /**
      * Test get block.
      */
-    @Test
+    @Test @Ignore
     public void testGetBlock() {
         try {
             Block block = BlocksApi.getBlock("1");
