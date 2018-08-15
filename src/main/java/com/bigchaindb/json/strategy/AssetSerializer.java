@@ -30,7 +30,12 @@ public class AssetSerializer implements JsonSerializer<Asset>
 	{
 		Gson gson = JsonUtils.getGson();
 		JsonObject asset = new JsonObject();
-		asset.add( "data", gson.toJsonTree( src.getData(), src.getDataClass() ) );
+
+		if (src.getData() != null) {
+			asset.add( "data", gson.toJsonTree( src.getData(), src.getDataClass() ) );
+		} else {
+			asset.add("id", gson.toJsonTree( src.getId() ));
+		}
 		
 		return asset;
 	}
