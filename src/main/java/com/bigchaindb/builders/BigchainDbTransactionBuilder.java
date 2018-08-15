@@ -326,11 +326,15 @@ public class BigchainDbTransactionBuilder {
                 this.transaction.addInput(input);
             }
 
-            if (this.transaction.getOperation() == null) {
+            if (this.operation == null || this.operation == Operations.CREATE) {
                 this.transaction.setOperation("CREATE");
+                this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
+            }
+            if (this.operation == Operations.TRANSFER){
+                this.transaction.setOperation(String.valueOf(this.operation));
+                this.transaction.setAsset(new Asset(this.inputs.get(0).getFulFills().getTransactionId()));
             }
 
-            this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
             this.transaction.setMetaData(this.metadata);
             this.transaction.setVersion("2.0");
 
