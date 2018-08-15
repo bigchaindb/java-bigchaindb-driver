@@ -81,7 +81,7 @@ public class OutputsApiTest extends AbstractApiTest {
         try {
             Outputs outputs = OutputsApi.getSpentOutputs(PUBKEY);
             assertTrue(outputs.getOutput().size() == 1);
-            assertTrue(outputs.getOutput().get(0).getOutputIndex().equals("0"));
+            assertTrue(outputs.getOutput().get(0).getOutputIndex().equals(0));
             assertTrue(outputs.getOutput().get(0).getTransactionId().equals("2d431073e1477f3073a4693ac7ff9be5634751de1b8abaa1f4e19548ef0b4b0e"));
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,7 +96,7 @@ public class OutputsApiTest extends AbstractApiTest {
         try {
             Outputs outputs = OutputsApi.getUnspentOutputs(PUBKEY);
             assertTrue(outputs.getOutput().size() == 1);
-            assertTrue(outputs.getOutput().get(0).getOutputIndex().equals("1"));
+            assertTrue(outputs.getOutput().get(0).getOutputIndex().equals(1));
             assertTrue(outputs.getOutput().get(0).getTransactionId().equals("2d431073e1477f3073a4693ac7ff9be5634751de1b8abaa1f4e19548ef0b4b0e"));
         } catch (IOException e) {
             e.printStackTrace();
