@@ -22,7 +22,6 @@ public class Asset implements Serializable {
 
 	/** The id. */
 	@SerializedName("id")
-	@Exclude
 	private String id;
 	
 	/** The data. */
@@ -48,7 +47,11 @@ public class Asset implements Serializable {
 		this.data = data;
 		this.dataClass = dataClass;
 	}
-	
+
+	public Asset(String id) {
+		this.id=id;
+	}
+
 	/**
 	 * Gets the data.
 	 *

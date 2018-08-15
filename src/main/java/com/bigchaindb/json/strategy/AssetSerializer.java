@@ -8,6 +8,7 @@ package com.bigchaindb.json.strategy;
 import com.bigchaindb.model.Asset;
 import com.bigchaindb.util.JsonUtils;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 
@@ -30,8 +31,19 @@ public class AssetSerializer implements JsonSerializer<Asset>
 	{
 		Gson gson = JsonUtils.getGson();
 		JsonObject asset = new JsonObject();
-		asset.add( "data", gson.toJsonTree( src.getData(), src.getDataClass() ) );
-		
+
+		if (gson.toJsonTree( src.getData(), src.getDataClass() ).toString().equals("null")) {
+			asset.remove("data");
+		}else {
+			asset.add("data", gson.toJsonTree(src.getData(), src.getDataClass()));
+		}
+
+		if (gson.toJsonTree(src.getId(), new TypeToken<String>() { }.getType()).toString() .equals("null")){
+			asset.remove("id");
+		}else {
+			asset.add( "id", gson.toJsonTree(src.getId(), new TypeToken<String>() { }.getType() ) );
+		}
+
 		return asset;
 	}
 }
