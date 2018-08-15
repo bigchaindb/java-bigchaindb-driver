@@ -277,8 +277,8 @@ public class BigchainDbTransactionBuilder {
         public ITransactionAttributes addInput(Details fullfillment, FulFill fullFill, EdDSAPublicKey... publicKeys) {
             for (EdDSAPublicKey publicKey : publicKeys) {
                 Input input = new Input();
-                Ed25519Sha256Condition sha256Condition = new Ed25519Sha256Condition(publicKey);
-                input.setFullFillment(sha256Condition.getUri().toString());
+//                Ed25519Sha256Condition sha256Condition = new Ed25519Sha256Condition(publicKey);
+                input.setFullFillment(fullfillment);
                 input.setFulFills(fullFill);
                 input.addOwner(KeyPairUtils.encodePublicKeyInBase58(publicKey));
                 this.inputs.add(input);
