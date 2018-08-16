@@ -135,9 +135,9 @@ public class MyCustomMonitor implements MessageHandler {
 
 // config
 BigchainDbConfigBuilder
-	.baseUrl("https://test.ipdb.io")
-	.addToken("app_id", "2bbaf3ff")
-	.addToken("app_key", "c929b708177dcc8b9d58180082029b8d")
+	.baseUrl("https://test.bigchaindb.com/")
+	.addToken("app_id", <your-app-id>)
+	.addToken("app_key", <your-app-key>)
 	.webSocketMonitor(new MyCustomMonitor())
 	.setup();
 ```
