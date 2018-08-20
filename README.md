@@ -264,8 +264,13 @@ Validators getValidators() throws IOException
 	- @bakaoh
 	- @innoprenuer
 
+## Release Process
+To execute a release build with Maven, define `performRelease` to enable GPG signing:
+`mvn clean package install -DperformRelease`
+
 ## Licenses
 
 See [LICENSE](LICENSE) and [LICENSE-docs](LICENSE-docs).
 
 Exception: `src/main/java/com/bigchaindb/util/Base58.java` has a different license; see the comments at the top of that file for more information.
+

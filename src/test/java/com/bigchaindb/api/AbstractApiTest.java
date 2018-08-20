@@ -7,7 +7,6 @@ package com.bigchaindb.api;
 
 import com.bigchaindb.AbstractTest;
 import com.bigchaindb.builders.BigchainDbConfigBuilder;
-import com.bigchaindb.model.Account;
 import com.bigchaindb.model.ApiEndpoints;
 import com.bigchaindb.model.BigChainDBGlobals;
 import com.bigchaindb.util.JsonUtils;
@@ -24,7 +23,7 @@ import static com.bigchaindb.api.BlocksApiTest.V1_BLOCK_JSON;
 import static com.bigchaindb.api.MetaDataApiTest.V1_METADATA_JSON;
 import static com.bigchaindb.api.MetaDataApiTest.V1_METADATA_LIMIT_JSON;
 import static com.bigchaindb.api.OutputsApiTest.*;
-import static com.bigchaindb.api.TransactionApiTest.*;
+import static com.bigchaindb.api.TransactionCreateApiTest.*;
 import static com.bigchaindb.api.ValidatorsApiTest.V1_VALIDATORS_JSON;
 import static net.jadler.Jadler.*;
 import static org.junit.Assert.assertTrue;

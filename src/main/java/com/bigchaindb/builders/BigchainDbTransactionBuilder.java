@@ -326,8 +326,10 @@ public class BigchainDbTransactionBuilder {
                 this.transaction.addInput(input);
             }
 
-            if (this.transaction.getOperation() == null) {
+            if (this.operation == null) {
                 this.transaction.setOperation("CREATE");
+            } else {
+                this.transaction.setOperation(this.operation.name());
             }
 
             this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
