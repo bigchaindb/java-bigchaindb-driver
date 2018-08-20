@@ -326,7 +326,7 @@ public class TransactionCreateApiTest extends AbstractApiTest {
 
             EdDSAPublicKey edDSAPublicKey = (EdDSAPublicKey) Account.publicKeyFromHex(publicKey);
             FulFill fulFill = new FulFill();
-            fulFill.setOutputIndex("0");
+            fulFill.setOutputIndex(0);
             fulFill.setTransactionId("2d431073e1477f3073a4693ac7ff9be5634751de1b8abaa1f4e19548ef0b4b0e");
 
             Transaction transaction = BigchainDbTransactionBuilder
@@ -345,7 +345,7 @@ public class TransactionCreateApiTest extends AbstractApiTest {
             assertTrue(input.getOwnersBefore() != null);
             assertTrue(input.getFullFillment() != null);
             assertTrue(input.getFulFills() != null);
-            assertTrue(input.getFulFills().getOutputIndex().equals("0"));
+            assertTrue(input.getFulFills().getOutputIndex().equals(0));
             assertTrue(input.getFulFills().getTransactionId().equals("2d431073e1477f3073a4693ac7ff9be5634751de1b8abaa1f4e19548ef0b4b0e"));
 
             Output output = transaction.getOutputs().get(0);

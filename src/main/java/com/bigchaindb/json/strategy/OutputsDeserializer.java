@@ -35,7 +35,7 @@ public class OutputsDeserializer implements JsonDeserializer<Outputs> {
 			Output output = new Output();
 			JsonElement jElement = jsonIter.next();
 			output.setTransactionId(jElement.getAsJsonObject().get("transaction_id").toString().replace("\"", ""));
-			output.setOutputIndex(jElement.getAsJsonObject().get("output_index").toString().replace("\"", ""));
+			output.setOutputIndex(Integer.parseInt(jElement.getAsJsonObject().get("output_index").toString().replace("\"", "")));
 			outputs.addOutput(output);
 		}
 		return outputs;

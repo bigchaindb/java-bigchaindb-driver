@@ -88,6 +88,8 @@ public class BigchainDbTransactionBuilder {
 
         ITransactionAttributes addInput(String fullfillment, FulFill fullFill, EdDSAPublicKey publicKey);
 
+        ITransactionAttributes addInput(Details fullfillment, FulFill fullFill, EdDSAPublicKey... publicKey);
+
         /**
          * Adds the assets.
          *
@@ -271,6 +273,18 @@ public class BigchainDbTransactionBuilder {
             return this;
         }
 
+        @Override
+        public ITransactionAttributes addInput(Details fullfillment, FulFill fullFill, EdDSAPublicKey... publicKeys) {
+            for (EdDSAPublicKey publicKey : publicKeys) {
+                Input input = new Input();
+                input.setFullFillment(fullfillment);
+                input.setFulFills(fullFill);
+                input.addOwner(KeyPairUtils.encodePublicKeyInBase58(publicKey));
+                this.inputs.add(input);
+            }
+            return this;
+        }
+
         public ITransactionAttributes addAssetDataClass(Class assetDataClass, JsonDeserializer<?> jsonDeserializer) {
             return this;
         }
@@ -332,7 +346,13 @@ public class BigchainDbTransactionBuilder {
                 this.transaction.setOperation(this.operation.name());
             }
 
-            this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
+            if (String.class.isAssignableFrom(this.assets.getClass())) {
+                // interpret as an asset ID
+                this.transaction.setAsset(new Asset((String) this.assets));
+            } else {
+                // otherwise it's an asset
+                this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
+            }
             this.transaction.setMetaData(this.metadata);
             this.transaction.setVersion("2.0");
 

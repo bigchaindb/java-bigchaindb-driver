@@ -35,6 +35,7 @@ public class JsonUtils {
 
     private static Map<String, TypeAdapter> typeAdaptersSerialize = new ConcurrentHashMap<String, TypeAdapter>(16) {{
         put(Asset.class.getCanonicalName(), new TypeAdapter(Asset.class, new AssetSerializer()));
+        put(Input.class.getCanonicalName(), new TypeAdapter(Input.class, new InputSerializer()));
         put(MetaData.class.getCanonicalName(), new TypeAdapter(MetaData.class, new MetaDataSerializer()));
     }};
 

@@ -16,7 +16,7 @@ public class FulFill {
 	
 	/** The output index. */
 	@SerializedName("output_index")
-	private String outputIndex = "";
+	private int outputIndex = 0;
 	
 	/** The transaction id. */
 	@SerializedName("transaction_id")
@@ -27,7 +27,7 @@ public class FulFill {
 	 *
 	 * @return the output index
 	 */
-	public String getOutputIndex() {
+	public Integer getOutputIndex() {
 		return outputIndex;
 	}
 
@@ -36,7 +36,7 @@ public class FulFill {
 	 *
 	 * @param outputIndex the new output index
 	 */
-	public void setOutputIndex(String outputIndex) {
+	public void setOutputIndex(Integer outputIndex) {
 		this.outputIndex = outputIndex;
 	}
 
