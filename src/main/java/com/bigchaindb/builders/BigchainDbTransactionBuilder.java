@@ -340,9 +340,10 @@ public class BigchainDbTransactionBuilder {
                 this.transaction.addInput(input);
             }
 
-            if (this.operation == null) {
-                this.transaction.setOperation("CREATE");
-            } else {
+            if (this.operation == Operations.CREATE) {
+                this.transaction.setOperation(this.operation.name());
+            }
+           else if(this.operation == Operations.TRANSFER){
                 this.transaction.setOperation(this.operation.name());
             }
 
