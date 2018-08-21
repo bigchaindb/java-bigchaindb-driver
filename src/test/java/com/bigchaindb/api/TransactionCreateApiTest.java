@@ -361,7 +361,7 @@ public class TransactionCreateApiTest extends AbstractApiTest {
     }
 
     @Test
-    public void testPostTransactionOfCreateUsingBuilder() {
+    public void testPostTransactionOfCreateUsingBuilder() throws Exception {
         net.i2p.crypto.eddsa.KeyPairGenerator edDsaKpg = new net.i2p.crypto.eddsa.KeyPairGenerator();
         KeyPair keyPair = edDsaKpg.generateKeyPair();
         try {
@@ -387,9 +387,10 @@ public class TransactionCreateApiTest extends AbstractApiTest {
 
     /**
      * Test post transaction using builder with call back.
+     * @throws Exception 
      */
     @Test
-    public void testPostCreateTransactionUsingBuilderWithCallBack() {
+    public void testPostCreateTransactionUsingBuilderWithCallBack() throws Exception {
         net.i2p.crypto.eddsa.KeyPairGenerator edDsaKpg = new net.i2p.crypto.eddsa.KeyPairGenerator();
         KeyPair keyPair = edDsaKpg.generateKeyPair();
         try {
@@ -430,7 +431,7 @@ public class TransactionCreateApiTest extends AbstractApiTest {
     }
 
     @Test
-    public void testPostCreateTransactionOfObjectMetaDataUsingBuilder() {
+    public void testPostCreateTransactionOfObjectMetaDataUsingBuilder() throws Exception {
         net.i2p.crypto.eddsa.KeyPairGenerator edDsaKpg = new net.i2p.crypto.eddsa.KeyPairGenerator();
         KeyPair keyPair = edDsaKpg.generateKeyPair();
         try {
