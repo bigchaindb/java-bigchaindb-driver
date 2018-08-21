@@ -72,56 +72,78 @@ BigchainDbConfigBuilder
 
 ### Example: Prepare keys, assets and metadata
 ```java
-//    prepare your keys
+// prepare your keys
 net.i2p.crypto.eddsa.KeyPairGenerator edDsaKpg = new net.i2p.crypto.eddsa.KeyPairGenerator();
 KeyPair keyPair = edDsaKpg.generateKeyPair();
 
-//    New asset
+// New asset
 Map<String, String> assetData = new TreeMap<String, String>() {{
     put("city", "Berlin, DE");
     put("temperature", "22");
     put("datetime", new Date().toString());
 }};
 
-//    New metadata
+// New metadata
 MetaData metaData = new MetaData();
 metaData.setMetaData("what", "My first BigchainDB transaction");
 ```
 
-### Example: Create a Transaction
-```java	
-//    Set up your transaction
-Transaction transaction = BigchainDbTransactionBuilder
-	.init()
-	.addAssets(assetData, TreeMap.class)
-	.addMetaData(metaData)
-	.operation(Operations.CREATE)
-	.buildOnly((EdDSAPublicKey) keyPair.getPublic());
-```
+### Example: Create an Asset
 
-### Example: Create and Sign Transaction
+Performing a CREATE transaction in BigchainDB allocates or issues a digital asset.
+
 ```java
-//    Set up your transaction
-Transaction transaction = BigchainDbTransactionBuilder
-	.init()
-	.addAssets(assetData, TreeMap.class)
-	.addMetaData(metaData)
-	.operation(Operations.CREATE)
-	.buildAndSignOnly((EdDSAPublicKey) keyPair.getPublic(), (EdDSAPrivateKey) keyPair.getPrivate());
-
-```
-
-### Example: Create, Sign and Send a Transaction
-```java
-//    Set up your transaction
-Transaction transaction = BigchainDbTransactionBuilder
+// Set up, sign, and send your transaction
+Transaction createTransaction = BigchainDbTransactionBuilder
 	.init()
 	.addAssets(assetData, TreeMap.class)
 	.addMetaData(metaData)
 	.operation(Operations.CREATE)
 	.buildAndSign((EdDSAPublicKey) keyPair.getPublic(), (EdDSAPrivateKey) keyPair.getPrivate())
 	.sendTransaction();
+```
 
+### Example: Transfer an Asset
+
+Performing a TRANSFER transaction in BigchainDB changes an asset's ownership (or, more accurately, authorized signers):
+
+```java
+// Generate a new keypair to TRANSFER the asset to
+KeyPair targetKeypair = edDsaKpg.generateKeyPair();
+
+// Describe the output you are fulfilling on the previous transaction
+final FulFill spendFrom = new FulFill();
+spendFrom.setTransactionId(createTransaction.getId());
+spendFrom.setOutputIndex(0);
+
+// Change the metadata if you want
+MetaData transferMetadata = new MetaData();
+metaData.setMetaData("what2", "My first BigchainDB transaction");
+
+// the asset's ID is equal to the ID of the transaction that created it
+String assetId = createTransaction.getId();
+
+// By default, the 'amount' of a created digital asset == "1". So we spend "1" in our TRANSFER.
+String amount = "1";
+
+// Use the previous transaction's asset and TRANSFER it
+Transaction transferTransaction = BigchainDbTransactionBuilder
+	.init()
+	.addMetaData(metaData)
+
+	// source keypair is used in the input, because the current owner is "spending" the output to transfer it
+	.addInput(null, spendFrom, (EdDSAPublicKey) keyPair.getPublic())
+
+	// after this transaction, the target 'owns' the asset, so, the new output includes the target's public key
+	.addOutput(output, (EdDSAPublicKey) targetKeypair.getPublic())
+
+	// reference the asset by ID when doing a transfer
+	.addAssets(assetId, String.class)
+	.operation(Operations.TRANSFER)
+
+	// the source key signs the transaction to authorize the transfer
+	.buildAndSign((EdDSAPublicKey) keyPair.getPublic(), (EdDSAPrivateKey) keyPair.getPrivate())
+	.sendTransaction();
 ```
 
 ### Example: Setup Config with Websocket Listener
@@ -140,6 +162,31 @@ BigchainDbConfigBuilder
 	.addToken("app_key", "c929b708177dcc8b9d58180082029b8d")
 	.webSocketMonitor(new MyCustomMonitor())
 	.setup();
+```
+
+### More examples
+
+#### Example: Create a Transaction (without signing and without sending)
+```java
+// Set up your transaction but only build it
+Transaction transaction = BigchainDbTransactionBuilder
+	.init()
+	.addAssets(assetData, TreeMap.class)
+	.addMetaData(metaData)
+	.operation(Operations.CREATE)
+	.buildOnly((EdDSAPublicKey) keyPair.getPublic());
+```
+
+#### Example: Create and Sign Transaction (without sending it to the ledger)
+```java
+//    Set up your transaction
+Transaction transaction = BigchainDbTransactionBuilder
+	.init()
+	.addAssets(assetData, TreeMap.class)
+	.addMetaData(metaData)
+	.operation(Operations.CREATE)
+	.buildAndSignOnly((EdDSAPublicKey) keyPair.getPublic(), (EdDSAPrivateKey) keyPair.getPrivate());
+
 ```
 
 <h2>Api Wrappers</h2>
