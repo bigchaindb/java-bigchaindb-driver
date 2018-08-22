@@ -371,12 +371,26 @@ public class BigchainDbTransactionBuilder {
          */
         private void sign(EdDSAPrivateKey privateKey)
                 throws InvalidKeyException, SignatureException, NoSuchAlgorithmException {
-
             String temp = this.transaction.toHashInput();
-            log.debug("TO BE HASHED ---->\n" + temp + "\n<");
             JsonObject transactionJObject = DriverUtils.makeSelfSortingGson(temp);
 
-            byte[] sha3Hash = DriverUtils.getSha3HashRaw(transactionJObject.toString().getBytes());
+            byte[] sha3Hash;
+            if (Operations.TRANSFER.name().equals(this.transaction.getOperation())) {
+                // it's a transfer operation: make sure to update the hash pre-image with
+                // the fulfilling transaction IDs and output indexes
+                StringBuilder preimage = new StringBuilder(transactionJObject.toString());
+                for (Input in : this.transaction.getInputs()) {
+                    if (in.getFulFills() != null) {
+                        FulFill fulfill = in.getFulFills();
+                        String txBlock = fulfill.getTransactionId() + String.valueOf(fulfill.getOutputIndex());
+                        preimage.append(txBlock);
+                    }
+                }
+                sha3Hash = DriverUtils.getSha3HashRaw(preimage.toString().getBytes());
+            } else {
+                // otherwise, just get the message digest
+                sha3Hash = DriverUtils.getSha3HashRaw(transactionJObject.toString().getBytes());
+            }
 
             // signing the transaction
             Signature edDsaSigner = new EdDSAEngine(MessageDigest.getInstance("SHA-512"));
