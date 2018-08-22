@@ -129,8 +129,9 @@ public class BigchainDbTransactionBuilder {
          *
          * @param publicKey the public key
          * @return the i build
+         * @throws Exception 
          */
-        IBuild build(EdDSAPublicKey publicKey);
+        IBuild build(EdDSAPublicKey publicKey) throws Exception;
 
         /**
          * Builds the and sign.
@@ -138,16 +139,18 @@ public class BigchainDbTransactionBuilder {
          * @param publicKey  the public key
          * @param privateKey the private key
          * @return the i build
+         * @throws Exception 
          */
-        IBuild buildAndSign(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey);
+        IBuild buildAndSign(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey) throws Exception;
 
         /**
          * Builds the and sign and return.
          *
          * @param publicKey the public key
          * @return the transaction
+         * @throws Exception 
          */
-        Transaction buildOnly(EdDSAPublicKey publicKey);
+        Transaction buildOnly(EdDSAPublicKey publicKey) throws Exception;
 
         /**
          * Builds the and sign and return.
@@ -155,8 +158,9 @@ public class BigchainDbTransactionBuilder {
          * @param publicKey  the public key
          * @param privateKey the private key
          * @return the transaction
+         * @throws Exception 
          */
-        Transaction buildAndSignOnly(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey);
+        Transaction buildAndSignOnly(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey) throws Exception;
     }
 
     /**
@@ -322,7 +326,7 @@ public class BigchainDbTransactionBuilder {
          * build(net.i2p.crypto.eddsa.EdDSAPublicKey)
          */
         @Override
-        public IBuild build(EdDSAPublicKey publicKey) {
+        public IBuild build(EdDSAPublicKey publicKey) throws Exception{
             this.transaction = new Transaction();
             this.publicKey = publicKey;
 
@@ -340,11 +344,13 @@ public class BigchainDbTransactionBuilder {
                 this.transaction.addInput(input);
             }
 
-            if (this.operation == null) {
-                this.transaction.setOperation("CREATE");
-            } else {
+            if (this.operation == Operations.CREATE 
+                    || this.operation == Operations.TRANSFER) {
                 this.transaction.setOperation(this.operation.name());
             }
+           else {
+               throw new Exception("Invalid Operations value. Accepted values are [Operations.CREATE, Operations.TRANSFER]");
+           }
 
             if (String.class.isAssignableFrom(this.assets.getClass())) {
                 // interpret as an asset ID
@@ -416,7 +422,7 @@ public class BigchainDbTransactionBuilder {
          * net.i2p.crypto.eddsa.EdDSAPrivateKey)
          */
         @Override
-        public IBuild buildAndSign(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey) {
+        public IBuild buildAndSign(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey) throws Exception {
             try {
                 this.build(publicKey);
                 this.sign(privateKey);
@@ -434,7 +440,7 @@ public class BigchainDbTransactionBuilder {
          * buildAndSignAndReturn(net.i2p.crypto.eddsa.EdDSAPublicKey)
          */
         @Override
-        public Transaction buildOnly(EdDSAPublicKey publicKey) {
+        public Transaction buildOnly(EdDSAPublicKey publicKey) throws Exception {
             this.build(publicKey);
             return this.transaction;
         }
@@ -448,7 +454,7 @@ public class BigchainDbTransactionBuilder {
          * net.i2p.crypto.eddsa.EdDSAPrivateKey)
          */
         @Override
-        public Transaction buildAndSignOnly(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey) {
+        public Transaction buildAndSignOnly(EdDSAPublicKey publicKey, EdDSAPrivateKey privateKey) throws Exception {
             this.buildAndSign(publicKey, privateKey);
             return this.transaction;
         }
