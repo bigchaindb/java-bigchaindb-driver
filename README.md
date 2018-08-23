@@ -8,7 +8,7 @@ Code is Apache-2.0 and docs are CC-BY-4.0
 [![Gitter](http://badges.gitter.im/bigchaindb/bigchaindb.svg)](https://gitter.im/bigchaindb/bigchaindb)
 [![java-bigchaindb-driver](media/repo-banner@2x.png)](https://www.bigchaindb.com)
 
-> Official Java driver for [BigchainDB](https://github.com/bigchaindb/bigchaindb) created by [bigchaindb](https://bigchaindb.com).
+> Official Java and Android driver for [BigchainDB](https://github.com/bigchaindb/bigchaindb) created by [bigchaindb](https://bigchaindb.com).
 
 **Please note**: This driver is compatible with android API 23 and later well.
 ## Compatibility
@@ -60,6 +60,9 @@ then
 ./gradlew install
 ```
 ## Usage
+
+> Sample for end-to-end CREATE and TRANSFER operation is available in this [gist](https://gist.github.com/innoprenuer/d4c6798fe5c0581c05a7e676e175e515)
+ 
 ### Set up your configuration
 - If you don't have app-id and app-key, you can register one at [https://testnet.bigchaindb.com/](https://testnet.bigchaindb.com/)
 
