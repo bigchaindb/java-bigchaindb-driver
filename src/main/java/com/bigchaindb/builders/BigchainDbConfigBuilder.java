@@ -87,7 +87,7 @@ public class BigchainDbConfigBuilder {
         /**
          * The baser url.
          */
-        String baserUrl;
+        String baseUrl;
 
         /**
          * The tokens.
@@ -115,7 +115,7 @@ public class BigchainDbConfigBuilder {
          * @param baseUrl the base url
          */
         public Builder(String baseUrl) {
-            this.baserUrl = baseUrl;
+            this.baseUrl = baseUrl;
         }
 
         /*
@@ -138,10 +138,10 @@ public class BigchainDbConfigBuilder {
          */
         @Override
         public void setup() {
-            log.debug(this.baserUrl);
+            log.debug(this.baseUrl);
             BigChainDBGlobals.setAuthorizationTokens(tokens);
-            BigChainDBGlobals.setBaseUrl(this.baserUrl + "/api" + BigchainDbApi.API_VERSION);
-            BigChainDBGlobals.setWsSocketUrl(this.baserUrl + "/api" + BigchainDbApi.API_VERSION + BigchainDbApi.STREAMS);
+            BigChainDBGlobals.setBaseUrl(this.baseUrl + "/api" + BigchainDbApi.API_VERSION);
+            BigChainDBGlobals.setWsSocketUrl(this.baseUrl + "/api" + BigchainDbApi.API_VERSION + BigchainDbApi.STREAMS);
 
             if (this.httpClient == null && BigChainDBGlobals.getHttpClient() == null) {
                 BigChainDBGlobals.setHttpClient(buildDefaultHttpClient());
@@ -149,7 +149,7 @@ public class BigchainDbConfigBuilder {
 
             try {
                 BigChainDBGlobals.setApiEndpoints(JsonUtils.fromJson(
-                        NetworkUtils.sendGetRequest(this.baserUrl + "/api" + BigchainDbApi.API_VERSION).body().string(),
+                        NetworkUtils.sendGetRequest(this.baseUrl + "/api" + BigchainDbApi.API_VERSION).body().string(),
                         ApiEndpoints.class));
             } catch (IOException e) {
                 e.printStackTrace();
