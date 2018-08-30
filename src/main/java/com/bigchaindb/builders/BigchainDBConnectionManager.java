@@ -13,6 +13,7 @@ import java.util.concurrent.TimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bigchaindb.builders.BigchainDbConfigBuilder.ITokens;
 import com.bigchaindb.constants.BigchainDbApi;
 import com.bigchaindb.model.ApiEndpoints;
 import com.bigchaindb.model.BigChainDBGlobals;
@@ -290,6 +291,15 @@ public class BigchainDBConnectionManager {
         tokens = (Map<String, String>) connection.getConnection().get("headers");
         return tokens;
          
+     }
+     
+     /**
+      * set up web sockets monitor
+      * @param messageHandler
+      */
+     public void webSocketMonitor(MessageHandler messageHandler) {
+         this.setupWsockets = true;
+         this.messageHandler = messageHandler;
      }
 
 }
