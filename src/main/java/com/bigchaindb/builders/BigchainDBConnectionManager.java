@@ -94,7 +94,7 @@ public class BigchainDBConnectionManager {
                 configureNodeToConnect();
             }
             else {
-            	log.info("Connected to node - " + BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl") +
+                log.info("Connected to node - " + BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl") +
                         " after " + BigChainDBGlobals.getCurrentNode().getRetryCount() + " retry(s)...");
                 this.processConnectionSuccess(nodeToConnect);
             }
@@ -105,7 +105,7 @@ public class BigchainDBConnectionManager {
                         + " ms. Check if the nodes are up and running!");
             }
             else {
-            	log.info("Couldn't connect to node - " + BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl") +
+                log.info("Couldn't connect to node - " + BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl") +
                             " after " + BigChainDBGlobals.getCurrentNode().getRetryCount() + " retry(s)...");
 
                 this.processConnectionFailure(nodeToConnect);

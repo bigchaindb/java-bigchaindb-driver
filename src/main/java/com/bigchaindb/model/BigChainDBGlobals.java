@@ -145,8 +145,7 @@ public class BigChainDBGlobals {
 	 * current connected node
 	 */
 	private static Connection currentNode;
-	
-	
+
 	public static Connection getCurrentNode() {
 		return currentNode;
 	}

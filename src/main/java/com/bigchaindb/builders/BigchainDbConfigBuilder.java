@@ -28,9 +28,10 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.LoggerFactory;
 
-/**
+/**@deprecated
  * The Class BigchainDbConfigBuilder.
  */
+@Deprecated
 public class BigchainDbConfigBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(BigchainDbConfigBuilder.class);
