@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.security.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * The Class BigchainDbTransactionBuilder.
@@ -173,8 +174,9 @@ public class BigchainDbTransactionBuilder {
          *
          * @return the transaction
          * @throws IOException Signals that an I/O exception has occurred.
+         * @throws TimeoutException 
          */
-        Transaction sendTransaction() throws IOException;
+        Transaction sendTransaction() throws TimeoutException;
 
         /**
          * Send transaction.
@@ -182,14 +184,17 @@ public class BigchainDbTransactionBuilder {
          * @param callback the callback
          * @return the transaction
          * @throws IOException Signals that an I/O exception has occurred.
+         * @throws TimeoutException 
          */
-        Transaction sendTransaction(GenericCallback callback) throws IOException;
+        Transaction sendTransaction(GenericCallback callback) throws TimeoutException;
     }
 
     /**
      * The Class Builder.
      */
     public static class Builder implements ITransactionAttributes, IBuild {
+
+       private BigchainDBConnectionManager connectionManager = new BigchainDBConnectionManager(BigChainDBGlobals.getConnections());
 
         /**
          * The metadata.
@@ -466,8 +471,13 @@ public class BigchainDbTransactionBuilder {
          * sendTransaction(com.bigchaindb.model.GenericCallback)
          */
         @Override
-        public Transaction sendTransaction(GenericCallback callback) throws IOException {
+        public Transaction sendTransaction(GenericCallback callback) throws TimeoutException {
+        	if(!BigChainDBGlobals.isConnected()) {
+        		connectionManager.processConnectionFailure(BigChainDBGlobals.getCurrentNode());
+        		connectionManager.configureNodeToConnect();
+        	}
             TransactionsApi.sendTransaction(this.transaction, callback);
+            connectionManager.processConnectionSuccess(BigChainDBGlobals.getCurrentNode());
             return this.transaction;
         }
 
@@ -478,8 +488,17 @@ public class BigchainDbTransactionBuilder {
          * sendTransaction()
          */
         @Override
-        public Transaction sendTransaction() throws IOException {
-            TransactionsApi.sendTransaction(this.transaction);
+        public Transaction sendTransaction() throws TimeoutException {
+        	if(!BigChainDBGlobals.isConnected()) {
+        		connectionManager.processConnectionFailure(BigChainDBGlobals.getCurrentNode());
+        		connectionManager.configureNodeToConnect();
+        	}
+            try {
+				TransactionsApi.sendTransaction(this.transaction);
+				connectionManager.processConnectionSuccess(BigChainDBGlobals.getCurrentNode());
+			} catch (IOException e) {
+        		sendTransaction();
+			}
             return this.transaction;
         }
 
