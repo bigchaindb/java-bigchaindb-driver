@@ -6,7 +6,6 @@
 package com.bigchaindb.api;
 
 import com.bigchaindb.AbstractTest;
-import com.bigchaindb.builders.BigchainDBConnectionManager;
 import com.bigchaindb.builders.BigchainDbConfigBuilder;
 import com.bigchaindb.model.ApiEndpoints;
 import com.bigchaindb.model.BigChainDBGlobals;
@@ -167,13 +166,14 @@ public class AbstractApiTest extends AbstractTest {
         connConfig.put("headers", headers);
         Connection conn1 = new Connection(connConfig);
         connections.add(conn1);
-        BigchainDBConnectionManager connManager = new BigchainDBConnectionManager(connections);
-        connManager.webSocketMonitor(new MessageHandler() {
+        BigchainDbConfigBuilder
+        .addConnections(connections)
+        .webSocketMonitor(new MessageHandler() {
                     @Override
                     public void handleMessage(String message) {
                     }
-                });
-        connManager.initialize();
+                })
+        .setup();
     }
 
     @AfterClass

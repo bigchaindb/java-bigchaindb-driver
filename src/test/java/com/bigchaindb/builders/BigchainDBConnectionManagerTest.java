@@ -1,6 +1,5 @@
 package com.bigchaindb.builders;
 
-import java.io.IOException;
 import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,11 +11,8 @@ import java.util.concurrent.TimeoutException;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bigchaindb.builders.BigchainDBConnectionManager;
-import com.bigchaindb.builders.BigchainDbTransactionBuilder;
 import com.bigchaindb.constants.Operations;
 import com.bigchaindb.model.BigChainDBGlobals;
 import com.bigchaindb.model.Connection;
@@ -39,7 +35,6 @@ public class BigchainDBConnectionManagerTest {
                  conn3Config = new HashMap<String, Object>();
          private final String LOCALHOST = "http://localhost:";
          
-         BigchainDBConnectionManager connManager = null;
          List<Connection> connections = new ArrayList<Connection>();
          Map<String, String> headers = new HashMap<String, String>();
          
@@ -83,7 +78,6 @@ public class BigchainDBConnectionManagerTest {
              connections.add(conn2);
              connections.add(conn3);
              
-             connManager = new BigchainDBConnectionManager(connections);
              
              BigChainDBGlobals.setTimeout(10000);
              
@@ -113,7 +107,9 @@ public class BigchainDBConnectionManagerTest {
              .respond()
              .withStatus(200);
              
-             connManager.initialize();
+             BigchainDbConfigBuilder
+             .addConnections(connections)
+             .setup();
              
              String actualBaseUrl = (String) BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl");
              Assert.assertEquals("Failed because of node", LOCALHOST.concat(Integer.toString(bdbNode1Port)), actualBaseUrl);
@@ -153,8 +149,9 @@ public class BigchainDBConnectionManagerTest {
              .respond()
              .withStatus(200);
              
-             //initialize connection manager
-             connManager.initialize();
+             BigchainDbConfigBuilder
+             .addConnections(connections)
+             .setup();
              
              //check if driver is connected to first node
              String actualBaseUrl = (String) BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl");
@@ -211,8 +208,9 @@ public class BigchainDBConnectionManagerTest {
              .respond()
              .withStatus(200);
              
-             //initialize connection manager
-             connManager.initialize();
+             BigchainDbConfigBuilder
+             .addConnections(connections)
+             .setup();
              
              //verify meta values of nodes are initialized as 0
              for(Connection conn : BigChainDBGlobals.getConnections()) {
@@ -313,8 +311,9 @@ public class BigchainDBConnectionManagerTest {
              .respond()
              .withStatus(200);
              
-             //initialize connection manager
-             connManager.initialize();
+             BigchainDbConfigBuilder
+             .addConnections(connections)
+             .setup();
 
             //check if driver is connected to first node
              String url1 = (String) BigChainDBGlobals.getCurrentNode().getConnection().get("baseUrl");

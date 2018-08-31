@@ -74,7 +74,7 @@ public class NetworkUtils {
      * @param url  the url
      * @param body the body
      * @return the response
-     * @throws IOException 
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static Response sendPostRequest(String url, RequestBody body) throws IOException {
         Response response = null;

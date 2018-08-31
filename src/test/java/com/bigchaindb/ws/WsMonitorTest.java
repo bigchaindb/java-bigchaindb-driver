@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-import com.bigchaindb.builders.BigchainDBConnectionManager;
+import com.bigchaindb.builders.BigchainDbConfigBuilder;
 import com.bigchaindb.model.Connection;
 
 public class WsMonitorTest {
@@ -32,17 +32,13 @@ public class WsMonitorTest {
             connConfig.put("headers", headers);
             Connection conn1 = new Connection(connConfig);
             connections.add(conn1);
-            BigchainDBConnectionManager connManager = new BigchainDBConnectionManager(connections);
-            connManager.webSocketMonitor(new MessageHandler() {
+            BigchainDbConfigBuilder
+            .addConnections(connections)
+            .webSocketMonitor(new MessageHandler() {
                         @Override
                         public void handleMessage(String message) {
                         }
-                    });
-            try {
-                connManager.initialize();
-            } catch (TimeoutException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+                    })
+            .setup();
     }
 }

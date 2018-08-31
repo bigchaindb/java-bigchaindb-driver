@@ -145,6 +145,21 @@ public class BigChainDBGlobals {
 	 * current connected node
 	 */
 	private static Connection currentNode;
+	
+	/**
+	 * check if there are multiple nodes used
+	 * @return boolean
+	 */
+	private static boolean hasMultipleNodes =  false;
+	
+
+	public static boolean isHasMultipleNodes() {
+		return hasMultipleNodes;
+	}
+
+	public static void setHasMultipleNodes(boolean hasMultipleNodes) {
+		BigChainDBGlobals.hasMultipleNodes = hasMultipleNodes;
+	}
 
 	public static Connection getCurrentNode() {
 		return currentNode;
@@ -158,6 +173,10 @@ public class BigChainDBGlobals {
 		return timeTillTimeout;
 	}
 
+	public static long calculateTimeTillTimeout() {
+		return timeTillTimeout - System.currentTimeMillis();
+	}
+	
 	public static void resetTimeTillTimeout() {
 		BigChainDBGlobals.timeTillTimeout = System.currentTimeMillis() 
 				+ BigChainDBGlobals.getTimeout();
