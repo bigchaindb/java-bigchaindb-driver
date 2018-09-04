@@ -268,7 +268,7 @@ public class BigchainDbConfigBuilder {
             //calculate time to retry for new connection
             long timeToRetryConnection = BigChainDBGlobals.DELAY * (long) Math.pow(2, conn.getRetryCount());
             //set whichever is smaller (this makes sure that timeToRetryConnection is always smaller than half of timeout
-            long timeToRetryCap = BigChainDBGlobals.calculateTimeTillTimeout()/2;
+            long timeToRetryCap = BigChainDBGlobals.getTimeout()/2;
             timeToRetryConnection = timeToRetryConnection < timeToRetryCap ? timeToRetryConnection : timeToRetryCap;
 
             conn.setTimeToRetryForConnection(System.currentTimeMillis() + timeToRetryConnection);
