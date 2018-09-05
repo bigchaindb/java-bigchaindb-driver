@@ -5,10 +5,10 @@
  */
 package com.bigchaindb.model;
 
-import okhttp3.OkHttpClient;
-
+import java.util.List;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
 
 
 /**
@@ -121,4 +121,90 @@ public class BigChainDBGlobals {
 		BigChainDBGlobals.httpClient = httpClient;
 	}
 
+	/**
+	 * indicates if connection to a node still successful
+	 */
+	private static boolean isConnected;
+	/**
+	 * timeout (defaults to 20000 ms)
+	 */
+	protected static int timeout = 20000;
+	/**
+	 * time to wait till timeout is reached
+	 */
+	private static long timeTillTimeout = System.currentTimeMillis() + timeout;
+	/**
+	 * list of nodes to connect to
+	 */
+	private static List<Connection> connections;
+	/**
+	 * delay added if connection failed
+	 */
+	public static final int DELAY = 500;
+	/**
+	 * current connected node
+	 */
+	private static Connection currentNode;
+	
+	/**
+	 * check if there are multiple nodes used
+	 * @return boolean
+	 */
+	private static boolean hasMultipleNodes =  false;
+	
+
+	public static boolean isHasMultipleNodes() {
+		return hasMultipleNodes;
+	}
+
+	public static void setHasMultipleNodes(boolean hasMultipleNodes) {
+		BigChainDBGlobals.hasMultipleNodes = hasMultipleNodes;
+	}
+
+	public static Connection getCurrentNode() {
+		return currentNode;
+	}
+
+	public static void setCurrentNode(Connection currentNode) {
+		BigChainDBGlobals.currentNode = currentNode;
+	}
+
+	public static long getTimeTillTimeout() {
+		return timeTillTimeout;
+	}
+
+	public static long calculateTimeTillTimeout() {
+		return timeTillTimeout - System.currentTimeMillis();
+	}
+	
+	public static void resetTimeTillTimeout() {
+		BigChainDBGlobals.timeTillTimeout = System.currentTimeMillis() 
+				+ BigChainDBGlobals.getTimeout();
+	}
+
+	public static int getTimeout() {
+		return timeout;
+	}
+
+	public static void setTimeout(int timeout) {
+		BigChainDBGlobals.timeout = timeout;
+	}
+
+	public static boolean isConnected() {
+		return isConnected;
+	}
+
+	public static void setConnected(boolean isConnected) {
+		BigChainDBGlobals.isConnected = isConnected;
+	}
+	
+	
+	public static List<Connection> getConnections() {
+		return connections;
+	}
+
+	public static void setConnections(List<Connection> connections) {
+		BigChainDBGlobals.connections = connections;
+	}
+	
 }

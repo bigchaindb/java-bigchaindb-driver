@@ -5,13 +5,34 @@
  */
 package com.bigchaindb.builders;
 
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
+
+import org.slf4j.LoggerFactory;
+
 import com.bigchaindb.api.TransactionsApi;
+import com.bigchaindb.builders.BigchainDbConfigBuilder.ConfigBuilder;
 import com.bigchaindb.constants.Operations;
 import com.bigchaindb.cryptoconditions.types.Ed25519Sha256Condition;
 import com.bigchaindb.cryptoconditions.types.Ed25519Sha256Fulfillment;
 import com.bigchaindb.json.strategy.TransactionDeserializer;
 import com.bigchaindb.json.strategy.TransactionsDeserializer;
-import com.bigchaindb.model.*;
+import com.bigchaindb.model.Asset;
+import com.bigchaindb.model.BigChainDBGlobals;
+import com.bigchaindb.model.Condition;
+import com.bigchaindb.model.Details;
+import com.bigchaindb.model.FulFill;
+import com.bigchaindb.model.GenericCallback;
+import com.bigchaindb.model.Input;
+import com.bigchaindb.model.Output;
+import com.bigchaindb.model.Transaction;
 import com.bigchaindb.util.DriverUtils;
 import com.bigchaindb.util.JsonUtils;
 import com.bigchaindb.util.KeyPairUtils;
@@ -19,15 +40,10 @@ import com.google.api.client.util.Base64;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializer;
+
 import net.i2p.crypto.eddsa.EdDSAEngine;
 import net.i2p.crypto.eddsa.EdDSAPrivateKey;
 import net.i2p.crypto.eddsa.EdDSAPublicKey;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.security.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Class BigchainDbTransactionBuilder.
@@ -94,6 +110,7 @@ public class BigchainDbTransactionBuilder {
          * Adds the assets.
          *
          * @param assets the assets
+         * @param assetsDataClass class if asset data
          * @return the i asset meta data
          */
         ITransactionAttributes addAssets(Object assets, Class assetsDataClass);
@@ -172,24 +189,26 @@ public class BigchainDbTransactionBuilder {
          * Send transaction.
          *
          * @return the transaction
-         * @throws IOException Signals that an I/O exception has occurred.
+         * @throws TimeoutException exception on timeout
          */
-        Transaction sendTransaction() throws IOException;
+        Transaction sendTransaction() throws TimeoutException;
 
         /**
          * Send transaction.
          *
          * @param callback the callback
          * @return the transaction
-         * @throws IOException Signals that an I/O exception has occurred.
+         * @throws TimeoutException exception on timeout
          */
-        Transaction sendTransaction(GenericCallback callback) throws IOException;
+        Transaction sendTransaction(GenericCallback callback) throws TimeoutException;
     }
 
     /**
      * The Class Builder.
      */
     public static class Builder implements ITransactionAttributes, IBuild {
+
+       private ConfigBuilder configBuilder =  new ConfigBuilder();
 
         /**
          * The metadata.
@@ -466,8 +485,13 @@ public class BigchainDbTransactionBuilder {
          * sendTransaction(com.bigchaindb.model.GenericCallback)
          */
         @Override
-        public Transaction sendTransaction(GenericCallback callback) throws IOException {
+        public Transaction sendTransaction(GenericCallback callback) throws TimeoutException {
+        	if(!BigChainDBGlobals.isConnected()) {
+        		configBuilder.processConnectionFailure(BigChainDBGlobals.getCurrentNode());
+        		configBuilder.configureNodeToConnect();
+        	}
             TransactionsApi.sendTransaction(this.transaction, callback);
+            configBuilder.processConnectionSuccess(BigChainDBGlobals.getCurrentNode());
             return this.transaction;
         }
 
@@ -478,8 +502,17 @@ public class BigchainDbTransactionBuilder {
          * sendTransaction()
          */
         @Override
-        public Transaction sendTransaction() throws IOException {
-            TransactionsApi.sendTransaction(this.transaction);
+        public Transaction sendTransaction() throws TimeoutException {
+        	if(!BigChainDBGlobals.isConnected()) {
+        		configBuilder.processConnectionFailure(BigChainDBGlobals.getCurrentNode());
+        		configBuilder.configureNodeToConnect();
+        	}
+            try {
+				TransactionsApi.sendTransaction(this.transaction);
+				configBuilder.processConnectionSuccess(BigChainDBGlobals.getCurrentNode());
+			} catch (IOException e) {
+        		sendTransaction();
+			}
             return this.transaction;
         }
 

@@ -50,7 +50,7 @@ then
 
 ```
 dependencies {
-    compile 'com.bigchaindb.bigchaindb-driver:1.0'
+    implementation 'com.bigchaindb.bigchaindb-driver:1.2'
     }
     
 ```
@@ -66,13 +66,58 @@ then
 ### Set up your configuration
 - If you don't have app-id and app-key, you can register one at [https://testnet.bigchaindb.com/](https://testnet.bigchaindb.com/)
 
+#### single node setup
 ```java
 BigchainDbConfigBuilder
 	.baseUrl("https://test.bigchaindb.com/")
 	.addToken("app_id", <your-app-id>)
 	.addToken("app_key", <your-app-key>).setup();
 ```
+#### multi-node setup (more robust and reliable)
+> **Note** - multi-node setup is only available in version 1.2 and later
+> **Assumption** -This setup assumes that defined multiple nodes are all connected within same BigchainDB network
 
+```java
+	//define connections
+    Map<String, Object> conn1Config = new HashMap<String, Object>(), 
+                 conn2Config = new HashMap<String, Object>();
+    
+    //defien headers for connections
+    Map<String, String> headers1 = new HashMap<String, String>();
+    Map<String, String> headers2 = new HashMap<String, String>();
+    
+    //config header for connection 1
+    headers1.put("app_id", "<your-app-id>");
+    headers1.put("app_key", "<your-app-key>");
+    
+    //config header for connection 2
+    headers2.put("app_id", "<your-app-id>");
+    headers2.put("app_key", "<your-app-key>");
+    
+    //config connection 1
+    conn1Config.put("baseUrl", "https://node1.mysite.com/");
+    conn1Config.put("headers", headers1);
+    Connection conn1 = new Connection(conn1Config);
+    
+    //config connection 2
+    conn2Config.put("baseUrl", "https://node2.mysite.com/");
+    conn2Config.put("headers", headers2);
+    Connection conn2 = new Connection(conn2Config);
+    
+    //add connections
+    List<Connection> connections = new ArrayList<Connection>();
+    connections.add(conn1);
+    connections.add(conn2);
+    //...You can add as many nodes as you want
+    
+    BigchainDbConfigBuilder
+    .addConnections(connections)
+    .setTimeout(60000) //override default timeout of 20000 milliseconds
+    .setup();
+    
+    }  
+
+```
 ### Example: Prepare keys, assets and metadata
 ```java
 // prepare your keys
