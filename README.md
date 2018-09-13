@@ -8,81 +8,90 @@ Code is Apache-2.0 and docs are CC-BY-4.0
 [![Gitter](http://badges.gitter.im/bigchaindb/bigchaindb.svg)](https://gitter.im/bigchaindb/bigchaindb)
 [![java-bigchaindb-driver](media/repo-banner@2x.png)](https://www.bigchaindb.com)
 
-> Official Java and Android driver for [BigchainDB](https://github.com/bigchaindb/bigchaindb) created by [bigchaindb](https://bigchaindb.com).
+# Official Java and Android Driver for BigchainDB
 
-**Please note**: This driver is compatible with android API 23 and later well.
+**Please note**: This driver is compatible with Android API 23 and later.
+
 ## Compatibility
 
 | BigchainDB Server | BigchainDB Java Driver |
 | ----------------- |------------------------------|
 | `2.x`             | `1.x`                      |
 
-
 ## Contents
 
-* [Installation and Usage](#installation-and-usage)
-* [Example: Create a transaction](#example-create-a-transaction)
-* [Documentation](#bigchaindb-documentation)
+* [Installation](#installation)
+* [Usage](#usage)
+* [API Wrappers](#api-wrappers)
+* [BigchainDB Documentation](#bigchaindb-documentation)
 * [Authors](#authors)
-* [License](#license)
+* [Licenses](#licenses)
 
 ## Installation
 
-The build system supports both maven and gradle -
+The build system supports both Maven and Gradle.
 
-##### Maven users 
-- In your `pom.xml` add java-driver as dependency
+### Maven Users
 
-```		
+In your `pom.xml` file, add `bigchaindb-driver` as a dependency:
+
+```xml
 <dependency>
 	<groupId>com.bigchaindb</groupId>
 	<artifactId>bigchaindb-driver</artifactId>
 	<version>1.0</version>
 </dependency>
 ```
-then 
 
- ```
- 	mvn clean install
- ```
-##### Gradle users
-- In your `build.gradle` add java-driver as compiling dependency
+then
+
+```
+mvn clean install
+```
+
+### Gradle Users
+
+In your `build.gradle` file, add `bigchaindb-driver` as a dependency:
 
 ```
 dependencies {
     implementation 'com.bigchaindb.bigchaindb-driver:1.2'
     }
-    
 ```
-then 
+
+then
 
 ```
 ./gradlew install
 ```
+
 ## Usage
 
-> Sample for end-to-end CREATE and TRANSFER operation is available in this [gist](https://gist.github.com/innoprenuer/d4c6798fe5c0581c05a7e676e175e515)
- 
-### Set up your configuration
-- If you don't have app-id and app-key, you can register one at [https://testnet.bigchaindb.com/](https://testnet.bigchaindb.com/)
+> A sample of an end-to-end CREATE and TRANSFER operation is available in the gist [https://gist.github.com/innoprenuer/d4c6798fe5c0581c05a7e676e175e515](https://gist.github.com/innoprenuer/d4c6798fe5c0581c05a7e676e175e515)
 
-#### single node setup
+### Set Up Your Configuration
+
+#### Single-Node Setup
+
 ```java
 BigchainDbConfigBuilder
-	.baseUrl("https://test.bigchaindb.com/")
-	.addToken("app_id", <your-app-id>)
-	.addToken("app_key", <your-app-key>).setup();
+	.baseUrl("https://node1.example.com/")
+	.addToken("header1", <header1_value>)
+	.addToken("header2", <header2_value>).setup();
 ```
-#### multi-node setup (more robust and reliable)
+
+#### Multi-Node Setup (More Robust and Reliable)
+
 > **Note** - multi-node setup is only available in version 1.2 and later
-> **Assumption** -This setup assumes that defined multiple nodes are all connected within same BigchainDB network
+>
+> **Assumption** - The following setup assumes that all nodes are all connected within same BigchainDB network.
 
 ```java
 	//define connections
     Map<String, Object> conn1Config = new HashMap<String, Object>(), 
                  conn2Config = new HashMap<String, Object>();
     
-    //defien headers for connections
+    //define headers for connections
     Map<String, String> headers1 = new HashMap<String, String>();
     Map<String, String> headers2 = new HashMap<String, String>();
     
@@ -116,9 +125,10 @@ BigchainDbConfigBuilder
     .setup();
     
     }  
-
 ```
-### Example: Prepare keys, assets and metadata
+
+### Example: Prepare Keys, Assets and Metadata
+
 ```java
 // prepare your keys
 net.i2p.crypto.eddsa.KeyPairGenerator edDsaKpg = new net.i2p.crypto.eddsa.KeyPairGenerator();
@@ -194,7 +204,8 @@ Transaction transferTransaction = BigchainDbTransactionBuilder
 	.sendTransaction();
 ```
 
-### Example: Setup Config with Websocket Listener
+### Example: Setup Config with WebSocket Listener
+
 ```java
 public class MyCustomMonitor implements MessageHandler {
 	@Override
@@ -212,9 +223,10 @@ BigchainDbConfigBuilder
 	.setup();
 ```
 
-### More examples
+### More Examples
 
 #### Example: Create a Transaction (without signing and without sending)
+
 ```java
 // Set up your transaction but only build it
 Transaction transaction = BigchainDbTransactionBuilder
@@ -226,6 +238,7 @@ Transaction transaction = BigchainDbTransactionBuilder
 ```
 
 #### Example: Create and Sign Transaction (without sending it to the ledger)
+
 ```java
 //    Set up your transaction
 Transaction transaction = BigchainDbTransactionBuilder
@@ -234,133 +247,136 @@ Transaction transaction = BigchainDbTransactionBuilder
 	.addMetaData(metaData)
 	.operation(Operations.CREATE)
 	.buildAndSignOnly((EdDSAPublicKey) keyPair.getPublic(), (EdDSAPrivateKey) keyPair.getPrivate());
-
 ```
 
-<h2>Api Wrappers</h2>
-<h3>Transactions</h3>
+## API Wrappers
 
-<h4>Send a Transaction</h4>
+### Transactions
+
+#### Send a Transaction
 
 ```java
 TransactionsApi.sendTransaction(Transaction transaction) throws IOException
 ```
 
-<h4>Send a Transaction with Callback</h4>
+#### Send a Transaction with Callback
 
 ```java
 TransactionsApi.sendTransaction(Transaction transaction, final GenericCallback callback) 
 ```
 
-<h4>Get Transaction given a Transaction Id</h4>
+#### Get Transaction given a Transaction Id
 
 ```java
 Transaction TransactionsApi.getTransactionById(String id) throws IOException
 ```
 
-<h4>Get Transaction given an Asset Id</h4>
+#### Get Transaction given an Asset Id
 
 ```java
 Transactions TransactionsApi.getTransactionsByAssetId(String assetId, Operations operation)
 ```
 
-<h3>Outputs</h3>
+### Outputs
 
-<h4>Get Outputs given a public key</h4>
+#### Get Outputs given a public key
 
 ```java
 Outputs getOutputs(String publicKey) throws IOException
 ```
 
-<h4>Get Spent Outputs given a public key</h4>
+#### Get Spent Outputs given a public key
 
 ```java
 Outputs getSpentOutputs(String publicKey) throws IOException
 ```
 
-<h4>Get Unspent Outputs given a public key</h4>
+#### Get Unspent Outputs given a public key
 
 ```java
 Outputs getUnspentOutputs(String publicKey) throws IOException
 ```
 
-<h3>Assets</h3>
+### Assets
 
-<h4>Get Assets given search key</h4>
+#### Get Assets given search key
 
 ```java
 Assets getAssets(String searchKey) throws IOException
 ```
 
-<h4>Get Assets given search key and limit</h4>
+#### Get Assets given search key and limit
 
 ```java
 Assets getAssetsWithLimit(String searchKey, String limit) throws IOException
 ```
 
-<h3>Blocks</h3>
+### Blocks
 
-<h4>Get Blocks given block id</h4>
+#### Get Blocks given block id
 
 ```java
 Block getBlock(String blockId) throws IOException
 ```
 
-<h4>Get Blocks given transaction id</h4>
+#### Get Blocks given transaction id
 
 ```java
 List<String> getBlocksByTransactionId(String transactionId) throws IOException
 ```
 
-<h3>MetaData</h3>
+### MetaData
 
-<h4>Get MetaData given search key</h4>
+#### Get MetaData given search key
 
 ```java
 MetaDatas getMetaData(String searchKey) throws IOException
 ```
 
-<h4>Get MetaData given search key and limit</h4>
+#### Get MetaData given search key and limit
 
 ```java
 MetaDatas getMetaDataWithLimit(String searchKey, String limit) throws IOException
 ```
 
-<h3>Validators</h3>
+### Validators
 
-<h4>Gets the the local validators set of a given node</h4>
+#### Gets the the local validators set of a given node
 
 ```java
 Validators getValidators() throws IOException
 ```
 
-
 ## BigchainDB Documentation
 
-- [HTTP API Reference](https://docs.bigchaindb.com/projects/server/en/latest/http-client-server-api.html)
-- [The Transaction Model](https://docs.bigchaindb.com/projects/server/en/latest/metadata-models/transaction-model.html?highlight=crypto%20conditions)
-- [Inputs and Outputs](https://docs.bigchaindb.com/projects/server/en/latest/metadata-models/inputs-outputs.html)
-- [Asset Transfer](https://docs.bigchaindb.com/projects/py-driver/en/latest/usage.html#asset-transfer)
-- [All BigchainDB Documentation](https://docs.bigchaindb.com/)
+* [HTTP API Reference](https://docs.bigchaindb.com/projects/server/en/latest/http-client-server-api.html)
+* [The Transaction Model](https://docs.bigchaindb.com/projects/server/en/latest/metadata-models/transaction-model.html?highlight=crypto%20conditions)
+* [Inputs and Outputs](https://docs.bigchaindb.com/projects/server/en/latest/metadata-models/inputs-outputs.html)
+* [Asset Transfer](https://docs.bigchaindb.com/projects/py-driver/en/latest/usage.html#asset-transfer)
+* [All BigchainDB Documentation](https://docs.bigchaindb.com/)
 
 ## Authors
-- inspired by [http://github.com/authenteq/java-bigchaindb-driver](http://github.com/authenteq/java-bigchaindb-driver). 
 
-- The [bigchaindb](https://bigchaindb.com) team and others including - 
-	- @bodia
-	- @alvin-reyes
-	- @agwego
-	- @nf-PostQuantum
-	- @Rokko11
-	- @tzclucian
-	- @kremalicious
-	- @avanaur
-	- @GerardoGa
-	- @bakaoh
-	- @innoprenuer
+Inspired by [http://github.com/authenteq/java-bigchaindb-driver](http://github.com/authenteq/java-bigchaindb-driver).
+
+The [BigchainDB](https://bigchaindb.com) team and others including:
+
+* @bodia
+* @alvin-reyes
+* @agwego
+* @nf-PostQuantum
+* @Rokko11
+* @tzclucian
+* @kremalicious
+* @avanaur
+* @GerardoGa
+* @bakaoh
+* @innoprenuer
 
 ## Release Process
+
 To execute a release build with Maven, define `performRelease` to enable GPG signing:
+
 `mvn clean package install -DperformRelease`
 
 ## Licenses
@@ -368,4 +384,3 @@ To execute a release build with Maven, define `performRelease` to enable GPG sig
 See [LICENSE](LICENSE) and [LICENSE-docs](LICENSE-docs).
 
 Exception: `src/main/java/com/bigchaindb/util/Base58.java` has a different license; see the comments at the top of that file for more information.
-
