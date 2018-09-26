@@ -25,7 +25,7 @@ public class MetaDataSerializer implements JsonSerializer<MetaData>
 	public JsonElement serialize( MetaData src, Type typeOfSrc, JsonSerializationContext context )
 	{
 		Gson gson = JsonUtils.getGson();
-		JsonElement metadata = gson.toJsonTree( src.getMetadata(), new TypeToken<Map<String, String>>() { }.getType() );
+		JsonElement metadata = gson.toJsonTree( src.getMetaData(), src.getDataClass() );//new TypeToken<Map<String, String>>() { }.getType() );
 		return metadata;
 	}
 }

@@ -126,11 +126,11 @@ public class Transaction implements Serializable {
 	/**
 	 * Set the metaData object
 	 *
-	 * @param obj the metadata object
+	 * @param metadata the metadata object
 	 */
-	public void setMetaData( Object obj )
+	public void setMetaData( Object metadata )
 	{
-		this.metaData = obj;
+		this.metaData = metadata;
 	}
 
 	/**

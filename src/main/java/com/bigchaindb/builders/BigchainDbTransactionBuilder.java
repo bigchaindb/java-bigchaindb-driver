@@ -31,6 +31,7 @@ import com.bigchaindb.model.Details;
 import com.bigchaindb.model.FulFill;
 import com.bigchaindb.model.GenericCallback;
 import com.bigchaindb.model.Input;
+import com.bigchaindb.model.MetaData;
 import com.bigchaindb.model.Output;
 import com.bigchaindb.model.Transaction;
 import com.bigchaindb.util.DriverUtils;
@@ -110,7 +111,7 @@ public class BigchainDbTransactionBuilder {
          * Adds the assets.
          *
          * @param assets the assets
-         * @param assetsDataClass class if asset data
+         * @param assetsDataClass class of asset data
          * @return the i asset meta data
          */
         ITransactionAttributes addAssets(Object assets, Class assetsDataClass);
@@ -119,9 +120,10 @@ public class BigchainDbTransactionBuilder {
          * Adds the meta data.
          *
          * @param metaData the json object
+         * @param metaDataClass class of meta data
          * @return the i asset meta data
          */
-        ITransactionAttributes addMetaData(Object metaData);
+        ITransactionAttributes addMetaData(Object metaData, Class metaDataClass);
 
         /**
          * Add the class and deserializer for metadata
@@ -214,6 +216,7 @@ public class BigchainDbTransactionBuilder {
          * The metadata.
          */
         private Object metadata = null;
+        private Class metadataClass = null;
 
         /**
          * The assets.
@@ -332,8 +335,9 @@ public class BigchainDbTransactionBuilder {
             return this;
         }
 
-        public ITransactionAttributes addMetaData(Object object) {
+        public ITransactionAttributes addMetaData(Object object, Class metaDataClass) {
             this.metadata = object;
+            this.metadataClass = metaDataClass;
             return this;
         }
 
@@ -378,7 +382,7 @@ public class BigchainDbTransactionBuilder {
                 // otherwise it's an asset
                 this.transaction.setAsset(new Asset(this.assets, this.assetsDataClass));
             }
-            this.transaction.setMetaData(this.metadata);
+            this.transaction.setMetaData(new MetaData(this.metadata, this.metadataClass));
             this.transaction.setVersion("2.0");
 
             this.transaction.setId(null);
