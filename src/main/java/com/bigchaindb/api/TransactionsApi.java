@@ -7,6 +7,7 @@ package com.bigchaindb.api;
 
 import com.bigchaindb.constants.BigchainDbApi;
 import com.bigchaindb.constants.Operations;
+import com.bigchaindb.exceptions.TransactionNotFoundException;
 import com.bigchaindb.model.BigChainDBGlobals;
 import com.bigchaindb.model.GenericCallback;
 import com.bigchaindb.model.Transaction;
@@ -16,6 +17,7 @@ import com.bigchaindb.util.NetworkUtils;
 
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,9 +68,14 @@ public class TransactionsApi extends AbstractApi {
 	 * @throws IOException
 	 *             Signals that an I/O exception has occurred.
 	 */
-	public static Transaction getTransactionById(String id) throws IOException {
+	public static Transaction getTransactionById(String id)
+			throws IOException, TransactionNotFoundException {
 		log.debug( "getTransactionById Call :" + id );
 		Response response = NetworkUtils.sendGetRequest(BigChainDBGlobals.getBaseUrl() + BigchainDbApi.TRANSACTIONS + "/" + id);
+		if(!response.isSuccessful()){
+			if(response.code() == HttpStatus.SC_NOT_FOUND)
+				throw new TransactionNotFoundException("Transaction with id " + id + " not present");
+		}
 		String body = response.body().string();
 		response.close();
 		return JsonUtils.fromJson(body, Transaction.class);
