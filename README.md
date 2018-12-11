@@ -4,7 +4,7 @@ SPDX-License-Identifier: (Apache-2.0 AND CC-BY-4.0)
 Code is Apache-2.0 and docs are CC-BY-4.0
 --->
 
-[![Build Status](https://travis-ci.org/bigchaindb/java-bigchaindb-driver.svg?branch=master)](https://travis-ci.org/bigchaindb/java-bigchaindb-driver)
+[![Build Status](https://travis-ci.com/bigchaindb/java-bigchaindb-driver.svg?branch=master)](https://travis-ci.com/bigchaindb/java-bigchaindb-driver)
 [![Gitter](http://badges.gitter.im/bigchaindb/bigchaindb.svg)](https://gitter.im/bigchaindb/bigchaindb)
 [![java-bigchaindb-driver](media/repo-banner@2x.png)](https://www.bigchaindb.com)
 
