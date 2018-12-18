@@ -8,6 +8,7 @@ package com.bigchaindb.api;
 import com.bigchaindb.api.TransactionsApi;
 import com.bigchaindb.builders.BigchainDbTransactionBuilder;
 import com.bigchaindb.constants.Operations;
+import com.bigchaindb.exceptions.TransactionNotFoundException;
 import com.bigchaindb.json.strategy.MetaDataDeserializer;
 import com.bigchaindb.json.strategy.MetaDataSerializer;
 import com.bigchaindb.json.strategy.TransactionDeserializer;
@@ -41,6 +42,7 @@ import static org.junit.Assert.assertTrue;
 public class TransactionCreateApiTest extends AbstractApiTest {
 
     public static String TRANSACTION_ID = "4957744b3ac54434b8270f2c854cc1040228c82ea4e72d66d2887a4d3e30b317";
+    public static String NON_EXISTENT_TRANSACTION_ID = "4957744b3ac5434b8270f2c854cc1040228c8ea4e72d66d2887a4d3e30b317";
     public static String V1_GET_TRANSACTION_JSON = "{\n" +
             "  \"asset\": {\n" +
             "    \"data\": {\n" +
@@ -245,8 +247,24 @@ public class TransactionCreateApiTest extends AbstractApiTest {
             assertTrue(transaction.getId().equals(TRANSACTION_ID));
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (TransactionNotFoundException e) {
+            e.printStackTrace();
         }
     }
+
+    /**
+     * Test get transaction when the transaction with supplied id is not present.
+     */
+    @Test(expected = TransactionNotFoundException.class)
+    public void testGetNonExistentTransaction() throws TransactionNotFoundException {
+        try {
+           TransactionsApi.getTransactionById(NON_EXISTENT_TRANSACTION_ID);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     /**
      * Test get transactions by assets id
