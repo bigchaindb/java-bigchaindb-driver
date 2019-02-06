@@ -5,26 +5,78 @@
  */
 package com.bigchaindb.model;
 
+import com.bigchaindb.annotations.Exclude;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.Serializable;
 
-
-
-/**
+/*
  * The Class MetaData.
  */
-public class MetaData {
+public class MetaData implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** The id. */
 	@SerializedName("id")
+	@Exclude
 	private String id;
 	
-	/** The metadata. */
-	@SerializedName("metadata")
-	private Map<String,String> metadata = new TreeMap<String, String>();
+	/** The data. */
+	@SerializedName("data")
+	private Object data;
+
+	/** the data class the type of the data class needed for serialization/deserialization */
+	@Exclude
+	private Class dataClass = com.google.gson.internal.LinkedTreeMap.class;
+
+	/**
+	 * Instantiates a new metadata.
+	 */
+	public MetaData() {}
 	
+	/**
+	 * Instantiates a new metadata.
+	 *
+	 * @param data the data
+	 * @param dataClass due to type erasure the data class needs to be provided for serialization/deserialization
+	 */
+	public MetaData(Object data, Class dataClass) {
+		this.data = data;
+		this.dataClass = dataClass;
+	}
+
+	/**
+	 * Instantiates a new metadata by reference.
+	 *
+	 * @param id ID of the metadata.
+	 */
+	public MetaData(String id) {
+		this.id = id;
+	}
+	
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
+	public Object getMetaData() {
+		return data;
+	}
+
+	/**
+	 * return the type of the Asset data class
+	 *
+	 * @return  the data class type
+	 */
+	public Class getDataClass()
+	{
+		return dataClass;
+	}
+
 	/**
 	 * Gets the id.
 	 *
@@ -32,27 +84,5 @@ public class MetaData {
 	 */
 	public String getId() {
 		return id;
-	}
-
-	/**
-	 * Sets the id.
-	 *
-	 * @param id the new id
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * Gets the metadata.
-	 *
-	 * @return the metadata
-	 */
-	public Map<String, String> getMetadata() {
-		return metadata;
-	}
-
-	public void setMetaData(String key, String value) {
-		this.metadata.put(key, value);
 	}
 }

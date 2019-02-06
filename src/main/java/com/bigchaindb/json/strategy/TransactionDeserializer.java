@@ -6,6 +6,7 @@
 package com.bigchaindb.json.strategy;
 
 import com.bigchaindb.model.Asset;
+import com.bigchaindb.model.MetaData;
 import com.bigchaindb.model.Input;
 import com.bigchaindb.model.Output;
 import com.bigchaindb.model.Transaction;
@@ -48,7 +49,7 @@ public class TransactionDeserializer implements JsonDeserializer<Transaction> {
 		JsonElement jElement = json.getAsJsonObject();
 
 		transaction.setAsset( JsonUtils.fromJson(jElement.getAsJsonObject().get("asset").toString(), Asset.class));
-		transaction.setMetaData( JsonUtils.fromJson( jElement.getAsJsonObject().get("metadata").toString(), metaDataClass ));
+		transaction.setMetaData( JsonUtils.fromJson(jElement.getAsJsonObject().get("metadata").toString(), metaDataClass));
 		transaction.setId(jElement.getAsJsonObject().get("id").toString().replace("\"", ""));
 
 		for( JsonElement jInputElement: jElement.getAsJsonObject().get("inputs").getAsJsonArray() ) {
